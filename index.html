@@ -204,6 +204,10 @@
                     $(this).data('copy',false);
                     timeCalculation();
                 });
+                $('.clear-data').on('click',function(){
+                    localStorage.setItem('nightmare','');
+                    init();
+                });
             });
         </script>
 	    <header class="cmn">
@@ -233,7 +237,7 @@
             <div id="other" class="flex-item"></div>
         </div>
         <footer class="cmn">
-            <button class="clear-data">aaaaaa</button>
+            <button class="clear-data">【ナイトメア情報を更新する】</button>
         </footer>
     </body>
 </html>
