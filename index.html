@@ -16,7 +16,7 @@
                 top:0;
                 left: 0;
                 width: 94vw;
-                background:#000; 
+                background:#000;
                 margin:0px;
                 color:whitesmoke;
                 line-height: calc(var(--main-header-height) - 2vh);
@@ -35,7 +35,7 @@
                 bottom: 0;
                 left: 0;
                 width: 94vw;
-                background:#000; 
+                background:#000;
                 margin:0px;
                 color:whitesmoke;
                 line-height: calc(var(--main-footer-height) - 2vh);
@@ -131,6 +131,18 @@
                     "time":20,
                     "wate":20
                 },
+                {
+                    "no":6,
+                    "name":"ポピー",
+                    "time":200,
+                    "wate":80
+                },
+                {
+                    "no":6,
+                    "name":"ポピー",
+                    "time":200,
+                    "wate":80
+                },
             ];
             function init(){
                 let listArea = $('.item-list');
@@ -138,7 +150,7 @@
                 nightmareData = JSON.parse(localStorage.getItem('nightmare'));
                 nightmare_getDatetime = localStorage.getItem('nightmare_getDatetime');
                 if(nightmareData == null){
-                    //localStorageにデータがない場合      
+                    //localStorageにデータがない場合
                     nightmareData = nightmareBase;
                     localStorage.setItem('nightmare', JSON.stringify(nightmareBase));
                     localStorage.setItem('nightmare_getDatetime', nowDate);
@@ -155,7 +167,7 @@
                     itemClone.find('.time').html(array[1].time);
                     listArea.append(itemClone);
                 });
-                
+
                 //不要なコピー元を削除
                 listArea.children('.item').first().remove();
             }
@@ -220,6 +232,8 @@
             <div id="this" class="flex-item"></div>
             <div id="other" class="flex-item"></div>
         </div>
-        <footer class="cmn"></footer>
+        <footer class="cmn">
+            <button class="clear-data"></button>
+        </footer>
     </body>
 </html>
