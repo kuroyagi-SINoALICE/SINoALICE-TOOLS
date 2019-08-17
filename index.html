@@ -166,15 +166,19 @@
                         });
                         elm.append('<div class="close">×</div>');
                         elm.append('<div class="time">['+jsonData.name+']S:<span class="start"></span>->E:<span class="excute"></span>->F:<span class="end"></span></div>');
-                        // elm.append('<div class="time">発動開始：<span class="excute"></span></div>');
-                        // elm.append('<div class="time">終了時間：<span class="end"></span></div>');
                         $('#this').append(elm);
                     }
                     $(this).data('copy',false);
                     timeCalculation();
                 });
+                // remove localStorage
                 $('.clear-data').on('click',function(){
                     localStorage.removeItem('nightmare');
+                });
+                // remove this element
+                $('.close').on('click',function(){
+                    let listNumber =  $(this).data("mareno");
+                    console.log(listNumber);
                 });
             });
         </script>
