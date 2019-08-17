@@ -176,7 +176,7 @@
                     localStorage.removeItem('nightmare');
                 });
                 // remove this element
-                $('.close').on('click',function(){
+                $('#this').on('click','.close',function(){
                     let listNumber = $(this).data("mareno");
                     console.log($(this));
                     console.log(listNumber);
