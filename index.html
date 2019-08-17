@@ -147,7 +147,8 @@
             function init(){
                 let listArea = $('.item-list');
                 let nowDate = Date.now();
-                nightmareData = JSON.parse(localStorage.getItem('nightmare'));
+                // nightmareData = JSON.parse(localStorage.getItem('nightmare'));
+                nightmareData = localStorage.getItem('nightmare');
                 nightmare_getDatetime = localStorage.getItem('nightmare_getDatetime');
                 if(nightmareData == null){
                     //localStorageにデータがない場合
