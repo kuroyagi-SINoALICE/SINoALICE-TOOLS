@@ -1,0 +1,225 @@
+<html lang="ja">
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+        <meta name="keywords" content="">
+        <meta name="description" content="">
+        <style type="text/css">
+            :root{
+                --main-header-height:5vh;
+                --main-footer-height:7vh;
+                --scroll-bar-width:17px;
+            }
+            body{margin: 0;box-sizing:border-box;}
+            header{
+                position: fixed;
+                top:0;
+                left: 0;
+                width: 94vw;
+                background:#000; 
+                margin:0px;
+                color:whitesmoke;
+                line-height: calc(var(--main-header-height) - 2vh);
+                padding: 1vh 3vw;
+                height: calc(var(--main-header-height) - 2vh);
+            }
+            .container{
+                display: flex;
+                justify-content:space-between;
+            }
+            h1{font-size:1rem;margin: 0;}
+            #setting-view{}
+            #copylight{}
+            footer{
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                width: 94vw;
+                background:#000; 
+                margin:0px;
+                color:whitesmoke;
+                line-height: calc(var(--main-footer-height) - 2vh);
+                padding: 1vh 3vw;
+                height: calc(var(--main-footer-height) - 2vh);
+            }
+            .cmn{
+                position: fixed;
+
+            }
+            #flex-container{
+                display: -webkit-box;
+                display: -ms-flexbox;
+                display: flex;
+                -webkit-box-orient: horizontal;
+                -webkit-box-direction: normal;
+                -ms-flex-direction: row;
+                flex-direction: row;
+                margin-top:5vh;
+            }
+            .flex-item{
+                width: calc((80vw - var(--scroll-bar-width)) / 2 );
+                height: 90px;
+                background-color: darkolivegreen;
+                border-left: 1px solid #000;
+                height:calc(100vh - var(--main-header-height) - var(--main-footer-height));
+            }
+            .item-box{
+                width: calc(20vw + var(--scroll-bar-width));
+                height: 90vh;
+                background-color: teal;
+                overflow: hidden;
+            }
+            .item-list{
+                width: calc(20vw + 17px);
+                height:calc(100vh - var(--main-header-height) - var(--main-footer-height));
+                display: flex;
+                flex-direction:column;
+                overflow: auto;
+                padding-right: 17px;
+            }
+            .item{
+                padding: 1vw;
+                border-bottom: #000 solid 1px;
+                line-height: 0.7em
+            }
+            p > .item{font-size: 1em;line-height: 1.1em}
+            .item img{ width: 5vw; height: auto;float: left; margin: 0 1vw 0 0; }
+            .item p{ margin: 0;}
+            .timeline{font-size: 0.7em; overflow: hidden;}
+            .close{
+                float: right;
+            }
+        </style>
+    </head>
+    <body>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <!-- jQuery UI -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+        <script type="text/javascript">
+            let totalTime;
+            let nightmareData;
+            const matchTime = {"time":1200};
+            const nightmareBase = [
+                {
+                    "no":1,
+                    "name":"リコネ",
+                    "time":150,
+                    "wate":50
+                },
+                {
+                    "no":2,
+                    "name":"ユノ",
+                    "time":150,
+                    "wate":50
+                },
+                {
+                    "no":3,
+                    "name":"ドリュ",
+                    "time":150,
+                    "wate":50
+                },
+                {
+                    "no":4,
+                    "name":"フィア",
+                    "time":40,
+                    "wate":40
+                },
+                {
+                    "no":5,
+                    "name":"プロメ",
+                    "time":20,
+                    "wate":20
+                },
+            ];
+            function init(){
+                let listArea = $('.item-list');
+                let nowDate = Date.now();
+                nightmareData = JSON.parse(localStorage.getItem('nightmare'));
+                nightmare_getDatetime = localStorage.getItem('nightmare_getDatetime');
+                if(nightmareData == null){
+                    //localStorageにデータがない場合      
+                    nightmareData = nightmareBase;
+                    localStorage.setItem('nightmare', JSON.stringify(nightmareBase));
+                    localStorage.setItem('nightmare_getDatetime', nowDate);
+                }
+                if(nowDate  > parseInt(nightmare_getDatetime) + 604800 ){
+                    //localStorageが一週間以上古い場合
+                    //serverWorkから情報を取得→localstorageに格納
+                };
+                Object.entries(nightmareData).map((array,index)=>{
+                    let itemClone = $('.item').first().clone(true);
+                    itemClone.attr('data-mareno',array[1].no);
+                    itemClone.attr('data-copy',true);
+                    itemClone.find('.name').html(array[1].name);
+                    itemClone.find('.time').html(array[1].time);
+                    listArea.append(itemClone);
+                });
+                
+                //不要なコピー元を削除
+                listArea.children('.item').first().remove();
+            }
+            function timeCalculation(){
+                let arrThisItem = $('#this').children();
+                console.log(arrThisItem);
+            }
+            $(function() {
+                init();
+
+                let lists = $('.item-list').children('.item');
+                lists.on('click',function(){
+                    if($(this).data('copy')){
+                        let jsonData;
+                        nightmareData.map((array,index)=>{
+                            if(array.no == $(this).data('mareno')){
+                                jsonData = nightmareData[index];
+                            }
+                        });
+                        let elm = $('<div></div>',{
+                            "class":"timeline",
+                            css: {"height": jsonData.time * 2/3 + "px","background-color":"red"},
+                            "data-mareno":jsonData.no,
+                            "data-time":jsonData.time,
+                            "data-wate":jsonData.wate
+                            //"text":jsonData.name+":"+jsonData.time+"秒(待機"+jsonData.wate+"秒)"
+                        });
+                        elm.append('<div class="close">×</div>');
+                        elm.append('<div class="time">['+jsonData.name+']S:<span class="start"></span>->E:<span class="excute"></span>->F:<span class="end"></span></div>');
+                        // elm.append('<div class="time">発動開始：<span class="excute"></span></div>');
+                        // elm.append('<div class="time">終了時間：<span class="end"></span></div>');
+                        $('#this').append(elm);
+                    }
+                    $(this).data('copy',false);
+                    timeCalculation();
+                });
+            });
+        </script>
+	    <header class="cmn">
+            <div class="container">
+                <h1>Title</h1>
+                <div id="setting-view">
+                    non-setting
+                </div>
+                <div id="copylight">
+                    <small>&copy; 2019 '(Θ ω Θ)`</small>
+                </div>
+            </div>
+        </header>
+        <div id="flex-container">
+            <div class="item-box">
+                <div class="item-list">
+                    <div class="item" data-mareno="">
+                        <img src="http://placehold.jp/50x50.png" alt="">
+                        <p>
+                            <span class="name">name:</span><br>
+                            <span class="time">time:</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div id="this" class="flex-item"></div>
+            <div id="other" class="flex-item"></div>
+        </div>
+        <footer class="cmn"></footer>
+    </body>
+</html>
