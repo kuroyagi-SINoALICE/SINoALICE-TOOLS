@@ -131,7 +131,7 @@
                 Object.entries(nightmareData).map((array,index)=>{
                     let itemClone = $('.item').first().clone(true);
                     itemClone.attr('data-mareno',array[1].no);
-                    itemClone.attr('data-copy',true);
+                    itemClone.attr('data-copy',"true");
                     itemClone.find('.name').html(array[1].name);
                     itemClone.find('.time').html(array[1].time);
                     listArea.append(itemClone);
@@ -168,7 +168,7 @@
                         elm.append('<div class="time">['+jsonData.name+']S:<span class="start"></span>->E:<span class="excute"></span>->F:<span class="end"></span></div>');
                         $('#this').append(elm);
                         //$(this).data('copy',false);
-                        $(this).attr('data-copy',false);
+                        $(this).attr('data-copy',"false");
                     }
 
                     timeCalculation();
@@ -181,8 +181,8 @@
                 $('#this').on('click','.close',function(){
                     let target = $(this).parent();
                     let listNumber = target.data('mareno');
-                    console.log($('div[data-copy="'+listNumber+'"]'));
-                    $('div[data-copy="'+listNumber+'"]').attr('data-copy',true);
+                    console.log($('div[data-mareno="'+listNumber+'"]'));
+                    $('div[data-mareno="'+listNumber+'"]').attr('data-copy',"true");
                     target.remove();
                 });
             });
