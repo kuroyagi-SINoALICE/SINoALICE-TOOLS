@@ -143,7 +143,8 @@
             function timeCalculation(){
                 let remain = matchTime.time;
                 //let arrThisItem = $('#this').find('.timeline');
-                let arrThisItem = $('#this').find('.timeline');
+                let arrThisItem = $('#this').find('.timeline').data();
+                console.log(arrThisItem);
                 //console.log(arrThisItem);
                 arrThisItem.map((index,elm)=>{
                     console.log(elm);
