@@ -149,10 +149,11 @@
 
                 let lists = $('.item-list').children('.item');
                 lists.on('click',function(){
-                    if($(this).data('copy')){
+                    console.log()
+                    if($(this).attr('data-copy') === true ){
                         let jsonData;
                         nightmareData.map((array,index)=>{
-                            if(array.no == $(this).data('mareno')){
+                            if(array.no == $(this).attr('data-mareno')){
                                 jsonData = nightmareData[index];
                             }
                         });
@@ -167,9 +168,10 @@
                         elm.append('<div class="close">×</div>');
                         elm.append('<div class="time">['+jsonData.name+']S:<span class="start"></span>->E:<span class="excute"></span>->F:<span class="end"></span></div>');
                         $('#this').append(elm);
+                        //$(this).data('copy',false);
+                        $(this).attr('data-copy',false);
                     }
-                    //$(this).data('copy',false);
-                    $(this).attr('data-copy',false);
+
                     timeCalculation();
                 });
                 // remove localStorage
