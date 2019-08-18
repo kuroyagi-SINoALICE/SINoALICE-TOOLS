@@ -141,16 +141,29 @@
                 listArea.children('.item').first().remove();
             }
             function timeCalculation(){
-                let remain;
+                let remain = matchTime.time;
                 let arrThisItem = $('#this').find('.timeline');
                 console.log(arrThisItem);
-                arrThisItem.map((num,index)=>{
-                    //let item = arrThisItem[num];
-                    console.log(num);
-                    console.log(arrThisItem[num]);
-                    console.log(index);
+                arrThisItem.map((index,elm)=>{
+                    let inTime = index.attr('data-time');
+                    let wateTime = index.attr('data-wate');
+                    let objMaretime = remain - maretime;
+                    let objWatetime = remain - maretime;
+                    console.log(objMaretime);
+                    console.log(objWatetime);
+
                 });
             }
+            function sec2min (time) {
+              var min = Math.floor(time / 60);
+              var sec = time % 60;
+
+              return {
+                min: min,
+                sec: sec
+              }
+            }
+
             $(function() {
                 init();
 
