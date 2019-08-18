@@ -168,7 +168,8 @@
                         elm.append('<div class="time">['+jsonData.name+']S:<span class="start"></span>->E:<span class="excute"></span>->F:<span class="end"></span></div>');
                         $('#this').append(elm);
                     }
-                    $(this).data('copy',false);
+                    //$(this).data('copy',false);
+                    $(this).attr('data-copy',false);
                     timeCalculation();
                 });
                 // remove localStorage
@@ -179,7 +180,8 @@
                 $('#this').on('click','.close',function(){
                     let target = $(this).parent();
                     let listNumber = target.data('mareno');
-                    $("div[data-copy='"+listNumber+"']").data('copy',true);
+                    console.log($('div[data-copy="'+listNumber+'"]'));
+                    $('div[data-copy="'+listNumber+'"]').attr('data-copy',true);
                     target.remove();
                 });
             });
