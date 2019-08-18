@@ -177,9 +177,10 @@
                 });
                 // remove this element
                 $('#this').on('click','.close',function(){
-                    let listNumber = $(this).data("mareno");
-                    console.log($(this));
-                    console.log(listNumber);
+                    let target = $(this).parent();
+                    let listNumber = target.data('mareno');
+                    $("div[data-del='"+listNumber+"']").data('copy',true);
+                    target.remove();
                 });
             });
         </script>
