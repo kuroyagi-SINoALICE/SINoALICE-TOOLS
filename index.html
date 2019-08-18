@@ -149,8 +149,7 @@
 
                 let lists = $('.item-list').children('.item');
                 lists.on('click',function(){
-                    console.log()
-                    if($(this).attr('data-copy') === true ){
+                    if($(this).attr('data-copy')){
                         let jsonData;
                         nightmareData.map((array,index)=>{
                             if(array.no == $(this).attr('data-mareno')){
