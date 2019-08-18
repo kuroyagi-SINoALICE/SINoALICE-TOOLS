@@ -145,12 +145,13 @@
                 let arrThisItem = $('#this').find('.timeline');
                 //console.log(arrThisItem);
                 arrThisItem.map((index,elm)=>{
-                    //let inTime = index.attr('data-time');
-                    //let wateTime = index.attr('data-wate');
-                    //let objMaretime = remain - maretime;
-                    //let objWatetime = remain - maretime;
+                    let inTime = elm.attr('data-time');
+                    let wateTime = elm.attr('data-wate');
+                    let objMaretime = remain - maretime;
+                    let objWatetime = remain - maretime;
 
-                    console.log(elm);
+                    console.log(objMaretime);
+                    console.log(objWatetime);
 
                 });
             }
