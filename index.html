@@ -179,7 +179,7 @@
                 $('#this').on('click','.close',function(){
                     let target = $(this).parent();
                     let listNumber = target.data('mareno');
-                    $("div[data-del='"+listNumber+"']").data('copy',true);
+                    $("div[data-copy='"+listNumber+"']").data('copy',true);
                     target.remove();
                 });
             });
