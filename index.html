@@ -346,7 +346,7 @@
 
             $(function() {
                 init();
-                headerHeight = $('#this').offset().top;
+                headerHeight = Math.floor($('#this').offset().top);
                 let lists = $('.item-list').children('.item');
                 lists.on('click',function(){
                     if($(this).attr('data-copy') == "true"){
