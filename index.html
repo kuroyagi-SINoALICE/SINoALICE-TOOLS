@@ -282,6 +282,7 @@
             let totalTime;
             let nightmareData;
             const matchTime = {"time":1200};
+            let headerHeight = $('header').outerHeight();
             const nightmareBase = [
                 {"no":1,"name":"リコネ","time":150,"wate":50},
                 {"no":2,"name":"ユノ", "time":150,"wate":50},
@@ -326,7 +327,7 @@
                 let remain = matchTime.time;
                 let arrThisItem = $('#this').find('.timeline');
                 arrThisItem.map((index,elm)=>{
-                    let top = arrThisItem[index].offsetTop;
+                    let top = arrThisItem[index].offsetTop - headerHeight;
                     console.log(top);
                 });
             }
