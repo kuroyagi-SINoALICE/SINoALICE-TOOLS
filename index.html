@@ -146,8 +146,9 @@
                 let arrThisItem = $('#this').find('.timeline');
                 console.log(arrThisItem);
                 //console.log(arrThisItem);
-                //arrThisItem.map((index,elm)=>{
-                    //console.log(elm);
+                arrThisItem.map((index,elm)=>{
+                    console.log(elm);
+                    console.log(index);
                     //console.log(arrThisItem[index]);
                     //let wateTime = elm.attr('data-wate');
                     //let objMaretime = remain - maretime;
@@ -156,7 +157,7 @@
                     //console.log(objTimes);
                     //console.log(objWatetime);
 
-                //});
+                });
             }
             function sec2min (time) {
               var min = Math.floor(time / 60);
