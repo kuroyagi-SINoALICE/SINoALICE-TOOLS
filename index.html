@@ -298,7 +298,6 @@
                 {"no":11,"name":"リント","time":200, "wate":80},
             ];
             function init(){
-                headerHeight = $('header').height();
                 let listArea = $('.item-list');
                 let nowDate = Date.now();
                 nightmareData = JSON.parse(localStorage.getItem('nightmare'));
@@ -347,6 +346,7 @@
 
             $(function() {
                 init();
+                headerHeight = $('#this').height();
 
                 let lists = $('.item-list').children('.item');
                 lists.on('click',function(){
