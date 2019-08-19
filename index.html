@@ -143,12 +143,12 @@
             function timeCalculation(){
                 let remain = matchTime.time;
                 //let arrThisItem = $('#this').find('.timeline');
-                let arrThisItem = $('#this').find('.timeline').data();
+                let arrThisItem = $('#this').find('.timeline');
                 console.log(arrThisItem);
                 //console.log(arrThisItem);
-                arrThisItem.map((index,elm)=>{
-                    console.log(elm);
-                    console.log(arrThisItem[index]);
+                //arrThisItem.map((index,elm)=>{
+                    //console.log(elm);
+                    //console.log(arrThisItem[index]);
                     //let wateTime = elm.attr('data-wate');
                     //let objMaretime = remain - maretime;
                     //let objWatetime = remain - maretime;
@@ -156,7 +156,7 @@
                     //console.log(objTimes);
                     //console.log(objWatetime);
 
-                });
+                //});
             }
             function sec2min (time) {
               var min = Math.floor(time / 60);
