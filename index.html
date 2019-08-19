@@ -324,21 +324,10 @@
             }
             function timeCalculation(){
                 let remain = matchTime.time;
-                //let arrThisItem = $('#this').find('.timeline');
                 let arrThisItem = $('#this').find('.timeline');
-                //console.log(arrThisItem[0]);
-                console.log(arrThisItem.length);
                 arrThisItem.map((index,elm)=>{
-                    console.log("index:"+index);
-                    console.log("elm:"+elm.style.left);
-                    //console.log(arrThisItem[index]);
-                    //let wateTime = elm.attr('data-wate');
-                    //let objMaretime = remain - maretime;
-                    //let objWatetime = remain - maretime;
-
-                    //console.log(objTimes);
-                    //console.log(objWatetime);
-
+                    let top = arrThisItem[index].offsetTop;
+                    console.log(top);
                 });
             }
             function sec2min (time) {
