@@ -327,8 +327,10 @@
                 let remain = matchTime.time;
                 let arrThisItem = $('#this').find('.timeline');
                 arrThisItem.map((index,elm)=>{
-                    let top = arrThisItem[index].offsetTop - headerHeight;
+                    let top = arrThisItem[index].offsetTop;
                     console.log(top);
+                    console.log(headerHeight);
+
                 });
             }
             function sec2min (time) {
