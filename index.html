@@ -97,6 +97,11 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
         <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
         <script type="text/javascript">
+            jQuery( function() {
+                jQuery( '.timeline' ) . draggable( {
+                    axis: 'y',
+                } );
+            } );
             let totalTime;
             let nightmareData;
             const matchTime = {"time":1200};
