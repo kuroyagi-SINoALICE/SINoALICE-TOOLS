@@ -85,7 +85,7 @@
             p > .item{font-size: 1em;line-height: 1.1em}
             .item img{ width: 5vw; height: auto;float: left; margin: 0 1vw 0 0; }
             .item p{ margin: 0;}
-            .timeline{font-size: 1rem; overflow: hidden;position: absolute;}
+            .timeline{font-size: 1rem; overflow: hidden;position: relative;}
             .close{
                 float: right;
             }
@@ -97,11 +97,11 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
         <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
         <script type="text/javascript">
-            jQuery( function() {
-                jQuery( '.timeline' ) . draggable( {
-                    axis: 'y',
-                } );
-            } );
+            $('.timeline').draggable( {
+                axis: 'y',
+                containment: '#this',
+                scroll: false,
+            });
             let totalTime;
             let nightmareData;
             const matchTime = {"time":1200};
