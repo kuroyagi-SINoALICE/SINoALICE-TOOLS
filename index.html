@@ -283,6 +283,7 @@
             let nightmareData;
             const matchTime = {"time":1200};
             let headerHeight = Math.floor($('header').outerHeight());
+            console.log(headerHeight)
             const nightmareBase = [
                 {"no":1,"name":"リコネ","time":150,"wate":50},
                 {"no":2,"name":"ユノ", "time":150,"wate":50},
@@ -329,7 +330,6 @@
                 arrThisItem.map((index,elm)=>{
                     let top = arrThisItem[index].offsetTop;
                     console.log(top);
-                    console.log(headerHeight);
 
                 });
             }
