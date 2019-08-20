@@ -5,20 +5,17 @@
         <meta name="keywords" content="">
         <meta name="description" content="">
         <style type="text/css">
-        </style>
-        <link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsenui.css">
-        <link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsen-css-components.min.css">
-        <script src="https://unpkg.com/onsenui/js/onsenui.min.js"></script>
-        
+        </style>        
     </head>
     <body>
-      <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
       <div id="app">
         <p>{{ message }}</p>
       </div>
-    </body>
-    <script type="text/javascript">
+      <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+      <script type="text/javascript">
        (function(){
+           'use strict';
         var vm = new Vue({
           el: '#app',
           data: {
@@ -27,4 +24,5 @@
         });
        })();
       </script>
+    </body>
 </html>
