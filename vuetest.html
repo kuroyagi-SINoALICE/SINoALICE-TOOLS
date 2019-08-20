@@ -12,14 +12,29 @@
       <div id="app">
         <p>{{ message }}</p>
       </div>
-              <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+       <ul id="app2">
+          <draggable>
+            <li v-for="item, index in items" :key="item.no">{{item.name}}-(No.{{item.no}})</li>
+          </draggable>
+        </ul>
+          <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+          <script src="//cdn.jsdelivr.net/npm/sortablejs@1.8.4/Sortable.min.js"></script>
+          <script src="//cdnjs.cloudflare.com/ajax/libs/Vue.Draggable/2.20.0/vuedraggable.umd.min.js"></script>
           <script type="text/javascript">
            (function(){
-               'use strict';
+            'use strict';
             var vm = new Vue({
               el: '#app',
               data: {
                 message: 'Hello Vue.js!'
+              },
+              el: "#app2",
+              data: {
+                items:[
+                  {no:1, name:'キャベツ', categoryNo:'1'},
+                  {no:2, name:'ステーキ', categoryNo:'2'},
+                  {no:3, name:'リンゴ', categoryNo:'3'}
+                ]
               }
             });
            })();
