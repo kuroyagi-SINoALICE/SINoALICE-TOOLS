@@ -86,7 +86,7 @@
                             <draggable :list="order" class="dragArea" @update="plotChart()">
                                 <transition-group name="list">
                                     <div v-for="o in order" class="list-item" v-bind:key="o.name">
-                                        <img class="list-icon" :src="'SINoALICE-TOOLS/img/'+ o.no +'.png'">
+                                        <img class="list-icon" :src="'/SINoALICE-TOOLS/img/'+ o.no +'.png'">
                                         <a href="#" @click="removeNightmare($event, o.name)" class="close-classic">✖</a>
                                     </div>
                                 </transition-group>
@@ -203,7 +203,7 @@
                 var nm = this.order;
                 for(n in nm){
                     var t = parseInt(nm[n].cast) + parseInt(nm[n].duration)
-                    entries.push({詠唱開始: pt(timeNow), メア終了: pt(timeNow - t), メア: nm[n].name })
+                    entries.push({詠唱開始: pt(timeNow),メア発動: pt(timeNow - parseInt(nm[n].cast)), メア終了: pt(timeNow - t), メア: nm[n].name })
                     timeNow -= t;
                 }
                 return entries;
