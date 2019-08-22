@@ -65,7 +65,7 @@
                                  v-b-popover.hover="showNightmare(nm.name)"
                                  container="popover-target"
                                  variant="success"
-                                 :src="'/img/' + nm.no + '.png'"
+                                 :src="'/SINoALICE-TOOLS/img/' + nm.no + '.png'"
                                  :title="nm.name"
                                  @click="addNightmare($event, nm.name)">
 
@@ -86,7 +86,7 @@
                             <draggable :list="order" class="dragArea" @update="plotChart()">
                                 <transition-group name="list">
                                     <div v-for="o in order" class="list-item" v-bind:key="o.name">
-                                        <img class="list-icon" :src="'/img/'+ o.no +'.png'">
+                                        <img class="list-icon" :src="'SINoALICE-TOOLS/img/'+ o.no +'.png'">
                                         <a href="#" @click="removeNightmare($event, o.name)" class="close-classic">✖</a>
                                     </div>
                                 </transition-group>
