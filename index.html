@@ -123,7 +123,6 @@
 
                                 <b-input-group>
                                     <b-input-group-append>
-                                        <b-btn @click="shortenURL()">リンクを短く!</b-btn>
                                     </b-input-group-append>
                                     <b-form-input readonly v-model="shortURL" id="short-url-input"></b-form-input>
                                     <b-input-group-append>
@@ -257,24 +256,6 @@
                 }
                 return o;
             } ,
-            shortenURL: function(){
-                this.shortURL = "しばらくお待ちください";
-                var that = this;
-                var url = this.URL;
-                console.log(JSON.stringify({longUrl : url}));
-                var key = "AIzaSyAaOjqINWxlWjgFHjxBuaZQW0Vs6aUN80c"; //I know what you're thinking but no.
-                var xhr = new XMLHttpRequest();
-                xhr.open("POST", 'https://www.googleapis.com/urlshortener/v1/url?key=' + key, true);
-                xhr.setRequestHeader("Content-type", "application/json");
-                xhr.send(JSON.stringify({longUrl : url}));
-                xhr.onreadystatechange = function(){
-                    if(xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200){
-                        that.shortURL = JSON.parse(xhr.responseText).id;
-                    }else{
-                        that.shortURL = "エラーが発生しました";
-                    }
-                }
-            },
             copyURL: function(id){
                 document.getElementById(id).select();
                 document.execCommand("Copy");
