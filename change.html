@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SINoALICEナイトメアコンポーサー </title>
+    <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css"/>
+    <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css"/>
+    <style>
+        .icon{
+            height: 75px;
+            width: 75px;
+        }
+        .list-icon{
+            height: 100px;
+            width: 100px;
+            display:flex;
+        }
+        .popover {
+            max-width:300px;
+        }
+        .list-item{
+            position: relative;
+            transition: all 0.1s;
+            max-width:100px;
+        }
+        .close-classic{
+            color: #777;
+            font: 25px/100% arial, sans-serif;
+            right: 5px;
+            text-decoration: none;
+            text-shadow: 0 1px 0 #fff;
+            top: 5px;
+            background-color: black;
+            position: absolute;
+            float: left;
+            margin-left: 80px;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+        <h3 class="navbar-brand">SINoALICEナイトメアコンポーサー</h3>
+    </nav>
+</header>
+
+
+<main role="main" id="app" class="container-fluid mh-100 mt-2 mb-1 pl-1 pr-t">
+    <div class="row align-items-start">
+        <div class="col-sm-4">
+            <div class="card">
+                <h5 class="card-header">ナイトメア一覧</h5>
+                <div class="card-body" style="max-height: 90vh; xoverflow-y: scroll;" id="popover-target">
+                    <div class="row mb-3">
+                        <b-input-group>
+                            <b-form-input v-model="searchTerm" placeholder="名前でフィルター"></b-form-input>
+                            <b-input-group-append>
+                                <b-btn @click="searchTerm=''">🗙</b-btn>
+                            </b-input-group-append>
+                        </b-input-group>
+                    </div>
+                    <div class="row" style="max-height:70vh; overflow: auto;">
+                        <div v-for="nm in filteredNm" class="col mb-2">
+                            <img class ="icon float-left"
+                                 v-b-popover.hover="showNightmare(nm.name)"
+                                 container="popover-target"
+                                 variant="success"
+                                 :src="'https://placehold.jp/126x126.png?text=' + nm.name"
+                                 :title="nm.name"
+                                 @click="addNightmare($event, nm.name)">
+
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <div class="card">
+                <h5 class="card-header">メア順</h5>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm"></div>
+                        <div class="col-sm">
+                            <draggable :list="order" class="dragArea" @update="plotChart()">
+                                <transition-group name="list">
+                                    <div v-for="o in order" class="list-item" v-bind:key="o.name">
+                                        <img class="list-icon" :src="'https://placehold.jp/126x126.png?text=' + o.name">
+                                        <a href="#" @click="removeNightmare($event, o.name)" class="close-classic">✖</a>
+                                    </div>
+                                </transition-group>
+                            </draggable>
+                        </div>
+                        <div class="col-sm"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="card">
+                <h5 class="card-header">インフォ</h5>
+                <div class="card-body ">
+                    <b-tabs>
+                        <b-tab title="時間表">
+                            <b-table :items="timetable">
+
+                            </b-table>
+                        </b-tab>
+                        <b-tab title="タイムライン">
+                            <div id="chart" class="w-100">
+
+                            </div>
+                        </b-tab>
+                        <b-tab title="セーブ／シェア">
+                            <div class="row mb-3">
+                                <b-input-group>
+                                    <b-form-input readonly v-model="URL" id="url-input"></b-form-input>
+                                    <b-input-group-append>
+                                        <b-btn @click="copyURL('url-input')">📋コピー</b-btn>
+                                    </b-input-group-append>
+                                </b-input-group>
+
+                                <b-input-group>
+                                    <b-input-group-append>
+                                        <b-btn @click="shortenURL()">リンクを短く!</b-btn>
+                                    </b-input-group-append>
+                                    <b-form-input readonly v-model="shortURL" id="short-url-input"></b-form-input>
+                                    <b-input-group-append>
+                                        <b-btn @click="copyURL('short-url-input')">📋コピー</b-btn>
+                                    </b-input-group-append>
+                                </b-input-group>
+
+                            </div>
+                        </b-tab>
+                    </b-tabs>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+<script src="https://unpkg.com/vue"></script>
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+<script src="https://unpkg.com/vue-directive-tooltip@latest/dist/vueDirectiveTooltip.min.js"></script>
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.7.0/Sortable.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Vue.Draggable/2.16.0/vuedraggable.min.js"></script>
+<script src="https://unpkg.com/babel-polyfill@latest/dist/polyfill.min.js"></script>
+<script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.js"></script>
+<script>
+    var rawData = '[{"name":"ポピー","rarity":"6","duration":"120","desc":"","skillName":"","cast":"80"},{"name":"ウガル","rarity":"6","duration":"120","desc":"","skillName":"","cast":"80"},{"name":"フリゴ","rarity":"6","duration":"120","desc":"","skillName":"","cast":"80"},{"name":"リント","rarity":"6","duration":"120","desc":"","skillName":"","cast":"80"},{"name":"ノイン","rarity":"6","duration":"100","desc":"","skillName":"","cast":"50"},{"name":"ミトラ","rarity":"6","duration":"0","desc":"","skillName":"","cast":"50"},{"name":"バーバリアン","rarity":"6","duration":"120","desc":"","skillName":"","cast":"60"},{"name":"ファラ","rarity":"6","duration":"100","desc":"","skillName":"","cast":"50"},{"name":"ライブラ","rarity":"6","duration":"0","desc":"","skillName":"","cast":"50"},{"name":"ブラン","rarity":"6","duration":"100","desc":"","skillName":"","cast":"60"},{"name":"ヤタガラス","rarity":"6","duration":"0","desc":"","skillName":"","cast":"50"},{"name":"スカレ","rarity":"6","duration":"80","desc":"","skillName":"","cast":"40"},{"name":"オディ","rarity":"6","duration":"100","desc":"","skillName":"","cast":"60"},{"name":"ディアボ","rarity":"6","duration":"100","desc":"","skillName":"","cast":"60"},{"name":"ドリュ","rarity":"6","duration":"100","desc":"","skillName":"","cast":"50"},{"name":"ココ","rarity":"6","duration":"100","desc":"","skillName":"","cast":"60"},{"name":"ウロボ","rarity":"6","duration":"0","desc":"","skillName":"","cast":"70"},{"name":"フィア","rarity":"6","duration":"0","desc":"","skillName":"","cast":"40"},{"name":"鎧巨人","rarity":"6","duration":"100","desc":"","skillName":"","cast":"60"},{"name":"ユノ","rarity":"6","duration":"100","desc":"","skillName":"","cast":"50"},{"name":"リコネ","rarity":"6","duration":"100","desc":"","skillName":"","cast":"50"},{"name":"シルタイ","rarity":"6","duration":"0","desc":"","skillName":"","cast":"50"},{"name":"ロイサ","rarity":"5","duration":"0","desc":"","skillName":"","cast":"60"},{"name":"ウィゴ","rarity":"5","duration":"0","desc":"","skillName":"","cast":"40"},{"name":"ガリア","rarity":"5","duration":"0","desc":"","skillName":"","cast":"20"},{"name":"ブブ","rarity":"5","duration":"0","desc":"","skillName":"","cast":"10"},{"name":"プロメ","rarity":"5","duration":"0","desc":"","skillName":"","cast":"20"},{"name":"リティ","rarity":"5","duration":"100","desc":"","skillName":"","cast":"60"},{"name":"ナツノ","rarity":"5","duration":"100","desc":"","skillName":"","cast":"60"}]';
+</script>
+<script>
+    var nmData = JSON.parse(rawData);
+    var url = new URL(window.location.href);
+    var orderJson = JSON.parse(decodeURI(url.searchParams.get("order")));
+    var order = []
+    for(o in orderJson){
+        for(nm in nmData) {
+            if (nmData[nm].name === orderJson[o]) {
+                if (!order.includes(nmData[nm])) {
+                    order.push(nmData[nm])
+                }
+            }
+        }
+    }
+    var app = new Vue({
+        el:'#app',
+        components: {
+        },
+        data: {
+            nightmares: nmData,
+            order: order,
+            searchTerm: "",
+            shortURL: ""
+        },
+        computed:{
+            filteredNm : function(){
+                var haystack = this.sortedByRarity;
+                if(this.searchTerm === "") return haystack;
+                return haystack.filter(needle => needle.name.includes(this.searchTerm));
+            },
+            sortedByRarity : function(){
+                function sortByRarity(a,b){
+                    if(parseInt(a.rarity) < parseInt(b.rarity))
+                        return -1;
+                    if(parseInt(a.rarity) > parseInt(b.rarity))
+                        return 1;
+                    return 0;
+                }
+                return this.nightmares.sort(sortByRarity).reverse();
+            },
+            timetable: function(){
+                function pt(s){
+                    return Math.max((s/60>>0),0) + ":" + ((s%60 >= 10)? s%60 : "0"+ Math.max(s%60, 0));
+                }
+                var timeNow = 20 * 60;
+                var entries = [];
+                var nm = this.order;
+                for(n in nm){
+                    var t = parseInt(nm[n].cast) + parseInt(nm[n].duration)
+                    entries.push({詠唱開始: pt(timeNow), メア終了: pt(timeNow - t), メア: nm[n].name })
+                    timeNow -= t;
+                }
+                return entries;
+            },
+            URL: function () {
+                var l = this.order;
+                var t = []
+                for (var i in l){
+                    t.push(l[i].name);
+                }
+                return [location.protocol, '//', location.host, location.pathname].join('') + "?order=" + encodeURI(JSON.stringify(t))
+            }
+        },
+        methods: {
+            addNightmare: function(e, name) {
+                for(nm in this.nightmares){
+                    if(this.nightmares[nm].name === name){
+                        if(!this.order.includes(this.nightmares[nm])) {
+                            this.order.push(this.nightmares[nm])
+                            this.plotChart();
+                        }
+                    }
+                }
+            },
+            removeNightmare: function (e, name) {
+                for(nm in this.order){
+                    if(this.order[nm].name === name){
+                        this.order.splice(nm, 1)
+                    }
+                }
+                this.plotChart();
+            },
+            showNightmare: function(name){
+                var needle;
+                for(nm in nmData){
+                    if(nmData[nm].name === name){
+                        needle = nmData[nm]
+                    }
+                }
+                var o = {
+                    title: '<h4>' + needle.name + '</h4>',
+                    content: "<div class=\"container\">\n" +
+                    "                            <div class=\"row\"><h5>" + needle.skillName + "</h5></div>" +
+                    "                            <div class=\"row mt-1\"> 詠唱期間：" + needle.cast + "秒</div>" +
+                    "                            <div class=\"row mb-1\"> 効果期間：" + needle.duration + "秒</div>" +
+                    "                            <div class=\"row\">" + needle.desc + "</div>" +
+                    "                        </div>",
+                    html: true,
+                    delay: {show:200, hide:200},
+                    placement: "rightbottom"
+                }
+                return o;
+            } ,
+            shortenURL: function(){
+                this.shortURL = "しばらくお待ちください";
+                var that = this;
+                var url = this.URL;
+                console.log(JSON.stringify({longUrl : url}));
+                var key = "AIzaSyAaOjqINWxlWjgFHjxBuaZQW0Vs6aUN80c"; //I know what you're thinking but no.
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", 'https://www.googleapis.com/urlshortener/v1/url?key=' + key, true);
+                xhr.setRequestHeader("Content-type", "application/json");
+                xhr.send(JSON.stringify({longUrl : url}));
+                xhr.onreadystatechange = function(){
+                    if(xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200){
+                        that.shortURL = JSON.parse(xhr.responseText).id;
+                    }else{
+                        that.shortURL = "エラーが発生しました";
+                    }
+                }
+            },
+            copyURL: function(id){
+                document.getElementById(id).select();
+                document.execCommand("Copy");
+            },
+            plotChart: function(){
+                var timeline = []
+                var nm = this.order
+                for(n in nm){
+                    timeline.push({label: nm[n].name + "詠唱", y: parseInt(nm[n].cast)})
+                    if(!(parseInt(nm[n].duration) === 0)){
+                        timeline.push({label: nm[n].name + "発動", y: parseInt(nm[n].duration)})
+                    }
+                }
+                var chart = new CanvasJS.Chart("chart", {
+                    theme: "light1",
+                    animationEnabled: true,
+                    title: {
+                        text: "時間割"
+                    },
+                    axisY: {
+                        title: "",
+                        prefix: "秒",
+                        lineThickness: 0,
+                        suffix: "",
+                        reversed: true
+                    },
+                    data: [{
+                        type: "waterfall",
+                        indexLabel: "{y}",
+                        dataPoints: timeline
+                    }]
+                });
+                chart.render();
+            }
+        },
+    });
+    app.plotChart();
+</script>
+
+</body>
+</html>
