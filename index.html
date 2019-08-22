@@ -65,7 +65,7 @@
                                  v-b-popover.hover="showNightmare(nm.name)"
                                  container="popover-target"
                                  variant="success"
-                                 :src="'https://placehold.jp/126x126.png?text=' + nm.name"
+                                 :src="'/img/' + nm.no + '.png'"
                                  :title="nm.name"
                                  @click="addNightmare($event, nm.name)">
 
@@ -86,7 +86,7 @@
                             <draggable :list="order" class="dragArea" @update="plotChart()">
                                 <transition-group name="list">
                                     <div v-for="o in order" class="list-item" v-bind:key="o.name">
-                                        <img class="list-icon" :src="'https://placehold.jp/126x126.png?text=' + o.name">
+                                        <img class="list-icon" :src="'/img/'+ o.no +'.png'">
                                         <a href="#" @click="removeNightmare($event, o.name)" class="close-classic">✖</a>
                                     </div>
                                 </transition-group>
@@ -151,12 +151,11 @@
 <script src="https://unpkg.com/babel-polyfill@latest/dist/polyfill.min.js"></script>
 <script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.js"></script>
 <script>
-    var rawData = '[
-    {"name":"ポピー","rarity":"6","duration":"120","desc":"","skillName":"","cast":"80","no":"1"},
+    var rawData = '[{"name":"ポピー","rarity":"6","duration":"120","desc":"","skillName":"","cast":"80","no":"1"},
     {"name":"ウガル","rarity":"6","duration":"120","desc":"","skillName":"","cast":"80","no":"2"},
     {"name":"フリゴ","rarity":"6","duration":"120","desc":"","skillName":"","cast":"80","no":"3"},
     {"name":"リント","rarity":"6","duration":"120","desc":"","skillName":"","cast":"80","no":"4"},
-    {"name":"ノイン","rarity":"6","duration":"100","desc":"","skillName":"","cast":"50","no":"5""},
+    {"name":"ノイン","rarity":"6","duration":"100","desc":"","skillName":"","cast":"50","no":"5"},
     {"name":"ミトラ","rarity":"6","duration":"0","desc":"","skillName":"","cast":"50","no":"6"},
     {"name":"バーバ","rarity":"6","duration":"120","desc":"","skillName":"","cast":"60","no":"7"},
     {"name":"ファラ","rarity":"6","duration":"100","desc":"","skillName":"","cast":"50","no":"8"},
@@ -181,8 +180,8 @@
     {"name":"プロメ","rarity":"5","duration":"0","desc":"","skillName":"","cast":"20","no":"27"},
     {"name":"リティ","rarity":"5","duration":"100","desc":"","skillName":"","cast":"60","no":"28"},
     {"name":"ナツノ","rarity":"5","duration":"100","desc":"","skillName":"","cast":"60","no":"29"},
-    {"name":"ゴゴン","rarity":"5","duration":"30","desc":"","skillName":"","cast":"60","no":"30"},
-    ]';
+    {"name":"ゴゴン","rarity":"5","duration":"30","desc":"","skillName":"","cast":"60","no":"30"}
+]';
 </script>
 <script>
     var nmData = JSON.parse(rawData);
