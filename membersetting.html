@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="jp">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-with, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="content-type" content="text/html; charset = UTF-8">
+    <title>SINoALICE TACTICS HELP TOOL</title>
+    <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
+    <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css" />
+    <style type="text/css">
+
+    </style>
+  </head>
+
+  <body>
+    <div id="app">
+      <header role="navigation">
+        <b-navbar toggleable="lg" type="dark" variant="dark">
+          <b-navbar-brand href="#">{{pagetitle}}</b-navbar-brand>
+          <span class="text-white">開始まで:{{}}</span>
+          <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+
+          <b-collapse id="nav-collapse" is-nav>
+            <!--b-navbar-nav>
+<b-nav-item href="#">Link</b-nav-item>
+<b-nav-item href="#" disabled>Disabled</b-nav-item>
+</b-navbar-nav-->
+
+            <!-- Right aligned nav items -->
+            <b-navbar-nav class="ml-auto">
+              <b-nav-item-dropdown right class="text-right">
+                <!-- Using 'button-content' slot -->
+                <template slot="button-content" class="text-right">GUILD SETTING</template>
+                <b-dropdown-item href="#">Member's data</b-dropdown-item>
+                <b-dropdown-item href="#">NightMare Deck</b-dropdown-item>
+                <b-dropdown-item href="#">Wapon Deck</b-dropdown-item>
+                <b-dropdown-item href="#">Guild Wapon Pack</b-dropdown-item>
+              </b-nav-item-dropdown>
+            </b-navbar-nav>
+            <b-navbar-nav>
+              <b-nav-item href="#" disabled>SINoALICE</b-nav-item>
+              <b-nav-item href="#">GAME SETTING</b-nav-item>
+            </b-navbar-nav>
+          </b-collapse>
+        </b-navbar>
+      </header>
+      <main class="container-fluid">
+        <h4>Regist Member</h4>
+        <ul class="list-group col-8">
+          <li class="list-group-item" v-for="(member, n) in limitCount">
+            <div class="row">
+            <div class="col-2 mt-2">{{ n+1 }}</div>
+            <div class="col-4 mt-2">{{ member.name }}</div>
+            <div class="col-3 mt-2">{{ member.job }}</div>
+            <div class="col-3 mt-2">
+            <button @click="remove(n)" type="button" class="btn btn-dark">Remove</button>
+            </div>
+            </div>
+          </li>
+        </ul>
+
+        <div class="form-row">
+          <div class="form-group col-2">
+            name:
+            <input v-model="name" type="text" class="form-control" placeholder="name">
+          </div>
+          <div class="form-group col-2">
+            position:
+            <select v-model="job" class="form-control">
+              <option v-for="(job, n) in jobs">{{ job }}</option>
+            </select>
+          </div>
+          <div class="form-group col-1">
+            <button @click="add" type="button" class="btn btn-dark mt-4">Add</button>
+          </div>
+        </div>
+      </main>
+      <footer class="fixed-bottom" >
+        <b-navbar class="justify-content-end" type="dark" variant="dark">
+          <b-navbar-nav>
+            <b-nav-item-dropdown text="NEW ORDER [ 作戦作成 ]" dropup right>
+              <b-dropdown-item href="#">[ 作戦概要 ] <span class="text-secondary">Plan Outline</span></b-dropdown-item>
+              <b-dropdown-item href="#">[ ナイトメア進行表 ] <span class="text-secondary">NIghtMare Timetable</span></b-dropdown-item>
+              <b-dropdown-item href="#">[ ナイトメア指定 ] <span class="text-secondary">NightMare Order</span></b-dropdown-item>
+              <b-dropdown-item href="#">[ 装備指定 ] <span class="text-secondary">Equipment Order</span></b-dropdown-item>
+              <b-dropdown-item href="#">[ 作戦行動 ] <span class="text-secondary">Oparation-behavior</span></b-dropdown-item>
+              <b-dropdown-item href="#">[ 疑問 ] <span class="text-secondary">Doubt</span></b-dropdown-item>
+              <b-dropdown-item href="#">[ 状況設定 ] <span class="text-secondary">SITUATION</span></b-dropdown-item>
+            </b-nav-item-dropdown>
+          </b-navbar-nav>
+        </b-navbar>
+      </footer>
+    </div><!--//#app-->
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <!--script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script-->
+    <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+    <script src="https://unpkg.com/babel-polyfill@latest/dist/polyfill.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.js"></script>
+    <script>
+      const app = new Vue({
+        el: '#app',
+        data: {
+          pagetitle: "ORDER",
+          members: [],
+          selected:"前衛",
+          jobs: ["前衛","物前","魔前","後衛","魔書","楽器","杖","魔具"],
+          name: null,
+          job: null,
+          newFace: {}
+        },
+        mounted() {
+          if (localStorage.getItem('members')) {
+            try {
+              this.members = JSON.parse(localStorage.getItem('members'));
+            } catch(e) {
+              localStorage.removeItem('members');
+            }
+          }
+        },
+        methods: {
+          add() {
+            // 実際に何かしたことを入力する
+            if (!this.name && !this.job) {
+              return;
+            }
+            this.newFace.name = this.name;
+            this.newFace.job = this.job;
+            this.members.push(this.newFace);
+            this.newFace = {};
+            this.name = "";
+            this.job = "";
+            this.save();
+          },
+          remove(x) {
+            this.members.splice(x, 1);
+            this.save();
+          },
+          save() {
+            const parsed = JSON.stringify(this.members);
+            localStorage.setItem('members', parsed);
+          }
+        },
+        computed: {
+          limitCount() {
+            return this.members.slice(0,15)
+          }
+        }
+      })
+    </script>
+  </body>
+</html>
