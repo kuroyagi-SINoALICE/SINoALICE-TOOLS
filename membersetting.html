@@ -18,7 +18,7 @@
       <header role="navigation">
         <b-navbar toggleable="lg" type="dark" variant="dark">
           <b-navbar-brand href="#">{{pagetitle}}</b-navbar-brand>
-          <span class="text-white">開始まで:{{}}</span>
+          <span class="text-white">書館</span>
           <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
           <b-collapse id="nav-collapse" is-nav>
@@ -47,20 +47,32 @@
       </header>
       <main class="container-fluid">
         <h4>Regist Member</h4>
-        <ul class="list-group col-8">
+        <ul class="list-group col-12">
           <li class="list-group-item" v-for="(member, n) in limitCount">
             <div class="row">
-            <div class="col-2 mt-2">{{ n+1 }}</div>
-            <div class="col-4 mt-2">{{ member.name }}</div>
-            <div class="col-3 mt-2">{{ member.job }}</div>
-            <div class="col-3 mt-2">
-            <button @click="remove(n)" type="button" class="btn btn-dark">Remove</button>
-            </div>
+              <div class="col-1 pt-3">{{ n+1 }}</div>
+              <div class="col-4 pt-2">
+                <div class="form-group">
+                  <input v-bind:value="member.name" type="text" class="form-control">
+                </div>
+              </div>
+                <div class="col-3 pt-2">
+                  <select v-bind:value="job" class="form-control" v-model="member.job">
+                    <option v-for="(job, n) in jobs">{{ job }}</option>
+                  </select>
+                </div>
+                <div class="col-2 pt-2">
+                  <button @click="change(n)" type="button" class="btn btn-dark">change</button>
+                </div>
+                <div class="col-2 pt-2">
+                  <button @click="remove(n)" type="button" class="btn btn-dark">Remove</button>
+                </div>
+
             </div>
           </li>
         </ul>
 
-        <div class="form-row">
+        <div class="form-row" style="margin-bottom:3rem">
           <div class="form-group col-2">
             name:
             <input v-model="name" type="text" class="form-control" placeholder="name">
@@ -134,6 +146,11 @@
           },
           remove(x) {
             this.members.splice(x, 1);
+            this.save();
+          },
+          change(x) {
+//            console.log(this.members[x]);
+            this.members.splice(x, 1, this.members[x]);
             this.save();
           },
           save() {
