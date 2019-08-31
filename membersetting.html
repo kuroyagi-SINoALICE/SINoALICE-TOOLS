@@ -46,44 +46,34 @@
         </b-navbar>
       </header>
       <main class="container-fluid">
-        <h4>Regist Member</h4>
-        <ul class="list-group col-12">
-          <li class="list-group-item" v-for="(member, n) in limitCount">
-            <div class="row">
-              <div class="col-1 pt-3">{{ n+1 }}</div>
-              <div class="col-4 pt-2">
-                <div class="form-group">
-                  <input v-bind:value="member.name" type="text" class="form-control">
+        <h4 class="pr-1">Regist Member</h4>
+          <div class="row " v-for="(member, n) in limitCount">
+                <div class="col-5 pt-2 pl-1 pr-0 form-group m-0">
+                  <input v-bind:value="member.name" type="text" class="form-control m-0">
                 </div>
-              </div>
-                <div class="col-3 pt-2">
+                <div class="col-3 pt-2 pl-1 pr-0 mr-1">
                   <select v-bind:value="job" class="form-control" v-model="member.job">
                     <option v-for="(job, n) in jobs">{{ job }}</option>
                   </select>
                 </div>
-                <div class="col-2 pt-2">
-                  <button @click="change(n)" type="button" class="btn btn-dark">change</button>
-                </div>
-                <div class="col-2 pt-2">
-                  <button @click="remove(n)" type="button" class="btn btn-dark">Remove</button>
-                </div>
+            <b-dropdown text="action" dropleft class="pt-2">
+              <b-dropdown-item @click="change(n)">change</b-dropdown-item>
+              <b-dropdown-item @click="remove(n)">remove</b-dropdown-item>
+            </b-dropdown>
+        </div>
 
-            </div>
-          </li>
-        </ul>
-
-        <div class="form-row" style="margin-bottom:3rem">
-          <div class="form-group col-5">
+        <div class="form-row" class="pl-0 pr-0" style="margin-bottom:3rem;">
+          <div class="form-group col-5 pl-0 pr-0">
             name:
-            <input v-model="name" type="text" class="form-control" placeholder="name">
+            <input v-model="name" type="text" class="form-control  " placeholder="name">
           </div>
-          <div class="form-group col-4">
+          <div class="form-group col-3">
             position:
             <select v-model="job" class="form-control">
               <option v-for="(job, n) in jobs">{{ job }}</option>
             </select>
           </div>
-          <div class="form-group col-3">
+          <div class="form-group col-1">
             <button @click="add" type="button" class="btn btn-dark mt-4">Add</button>
           </div>
         </div>
