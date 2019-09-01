@@ -46,7 +46,7 @@
         </b-navbar>
       </header>
       <main class="container-fluid">
-        <h4 class="pr-1">Regist Member</h4>
+        <h4 class="mt-2 pl-0">Regist Member</h4>
           <div class="row " v-for="(member, n) in limitCount">
                 <div class="col-5 pt-2 pl-1 pr-0 form-group m-0">
                   <input v-bind:value="name" type="text" class="form-control m-0" v-model="member.name">
@@ -61,8 +61,7 @@
               <b-dropdown-item @click="remove(n)">remove</b-dropdown-item>
             </b-dropdown>
         </div>
-
-        <div class="form-row" class="pl-0 pr-0" style="margin-bottom:3rem;">
+        <div v-if="memberCount < 15" class="form-row" class="pl-0 pr-0" style="margin-bottom:4rem;">
           <div class="form-group col-5 pl-0 pr-0">
             name:
             <input v-model="name" type="text" class="form-control  " placeholder="name">
@@ -76,6 +75,9 @@
           <div class="form-group col-1">
             <button @click="add" type="button" class="btn btn-dark mt-4">Add</button>
           </div>
+        </div>
+        <div v-else class="pl-0 pr-0 text-center" style="margin-bottom:4rem;padding-top:5px">
+          <span>--上限人数に達しました。--</span>
         </div>
       </main>
       <footer class="fixed-bottom" >
@@ -109,7 +111,7 @@
           jobs: ["前衛","物前","魔前","後衛","魔書","楽器","杖","魔具"],
           name: null,
           job: null,
-          newFace: {}
+          newFace: {},
         },
         mounted() {
           if (localStorage.getItem('members')) {
@@ -139,7 +141,7 @@
             this.save();
           },
           change(x) {
-//            console.log(this.members[x]);
+            console.log(this.members[x]);
             this.members.splice(x, 1, this.members[x]);
             this.save();
           },
@@ -150,7 +152,11 @@
         },
         computed: {
           limitCount() {
-            return this.members.slice(0,15)
+            console.log(this.members.length);
+            return this.members.slice(0,15);
+          },
+          memberCount(){
+            return this.members.length;
           }
         }
       })
